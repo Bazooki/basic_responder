@@ -47,7 +47,7 @@ if (sha1($str) == $_GET['signature']){
         if(!empty($dbHandle)){
 
             //logs the db connect event
-            $errlog = fopen('errlog.txt', 'a');
+            $errlog = fopen('/tmp/errlog.txt', 'a');
             fwrite($errlog, 'Database accessed: '.date('Y-m-d H:i:s'). "\r\n");
             fclose($errlog);
 
@@ -141,7 +141,7 @@ if (sha1($str) == $_GET['signature']){
 
                 //Insert into db field xml_out
                 $return = $response;
-                $errlog = fopen('errlog.txt', 'a');
+                $errlog = fopen('/tmp/errlog.txt', 'a');
                 fwrite($errlog, $lastId."\r\n");
                 fclose($errlog);
 
