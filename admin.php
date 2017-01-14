@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chrisvv
- * Date: 2015/02/09
- * Time: 10:08 AM
- */
-
 include 'config.php';
 include 'functions.php';
 
@@ -58,69 +51,49 @@ if (isset($_POST['updateMenu'])) {
                         'key' => 'V1001_GOOD',
 
                     )
-
-
                 )
             )
         )
     ));
 
     $test = curl_send_json('https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$_SESSION['accessToken'],$jsonMenu);
-
 //Menu sent
-
 //Echo response from API
     echo '<pre>';
     var_dump($test);
     echo '</pre>';
-
 }
-
 
 // Button
 echo '<form action="admin.php" method="post">';
 ?>
-
     <input type = "submit" value = "Update Menu" name = "updateMenu" />
 <?php
 echo "<br />";
 echo '</form>';
 
-
-
 // Number of rows in xml_log table
 echo ($num) . " total rows" . "<br><br>" ;
 
-
 $xml = simplexml_load_string($row['xml_in']);
-
-
 
 // Check token expiry and gets new if expired
 if (!isset($_SESSION['accessToken']) || $now >= $_SESSION['expires']){
 
-
     $tokenString = file_get_contents('https://api.wechat.com/cgi-bin/token?grant_type=client_credential&appid='.$appId.'&secret='.$appSecret);
     $tokenObj = json_decode($tokenString);
-
 
     $_SESSION['accessToken'] = $tokenObj->access_token;
     $_SESSION['expires'] = $tokenObj->expires_in + $now;
 
     //Shows token if retrieved
     var_dump($tokenObj);
-
 }
 else{
-
     echo 'Using existing token.';
-
 }
 
 echo '<br><br>';
-
-//var_dump($_SESSION);
-
 
 // Reply to user with push message
 if (isset($_POST['submit'])) {
@@ -136,15 +109,12 @@ if (isset($_POST['submit'])) {
 
     ));
 
-
     $test = curl_send_json('https://api.wechat.com/cgi-bin/message/custom/send?access_token='.$_SESSION['accessToken'],$jsonOutput);
-// end reply
-
+    // end reply
     //Echo response from API
     echo '<pre>';
     var_dump($test);
     echo '</pre>';
-
 }
 
 //shows rows
@@ -155,8 +125,6 @@ while ($row = $data->fetch_array()) {
     echo $row['created'] . " " . '<input type = "hidden" name = "id" value="' . $row['id'] . '">' . " -- " . '<input type="hidden" name="FromUserName" value = "' . $xml->FromUserName . '">'. $xml->FromUserName . " -- " . $xml->MsgType . " -- " . $xml->Content . '<input type = "submit" value = "Push" name = "submit" >';
     echo "<br />";
     echo '</form>';
-
-
 }
 
 $dbHandle->close();

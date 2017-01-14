@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chrisvv1
- * Date: 15/02/12
- * Time: 4:39 PM
- */
-
-
 //This is the verification token you enter when queried for it by the sandbox.
 $token = '62f9b641cffcb486a961727396ced018';
-
 
 //Define db values
 $db['host'] = 'localhost';

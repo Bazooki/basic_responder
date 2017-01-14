@@ -8,29 +8,23 @@ $array[] = $_GET['timestamp'];
 $array[] = $_GET['nonce'];
 //Defined in config
 $array[] = $token;
-
 //Formats array in correct order as mentioned in the wiki
 sort( $array, SORT_STRING );
 $str = implode( $array );
-
 //grabs php input
 $xmlInput = file_get_contents( 'php://input' );
-
 //converts xml to object
 $xml = simplexml_load_string( $xmlInput );
-
 
 //Compares the local and API signatures
 if (sha1( $str ) == $_GET['signature']) {
 
     //sends 'echostr' to confirm that the local signature matches the signature from the API
     if (! empty( $_GET['echostr'] )) {
-
         echo( $_GET['echostr'] );
         die();
     } //debug code for if something went wrong
     else {
-
 
         //connects to db
         $dbHandle = mysqli_connect( $db['host'], $db['user'], $db['pass'], $db['db'] );
@@ -40,14 +34,12 @@ if (sha1( $str ) == $_GET['signature']) {
         $event = strtolower( $xml->Event );
         $eventKey = strtolower( $xml->EventKey );
 
-
         if (! empty( $dbHandle )) {
 
             //logs the db connect event
             $errlog = fopen( '/tmp/errlog.txt', 'a' );
             fwrite( $errlog, 'Database accessed: ' . date( 'Y-m-d H:i:s' ) . "\r\n" );
             fclose( $errlog );
-
 
             //Insert into db field xml_in
             $sql = "INSERT INTO xml_logs (openid,created,xml_in,msgtype,message) VALUES ('" . $xml->openid . "','" . date( 'Y-m-d H:i:s' ) . "','$xmlInput','$msgType','" . $content . "')";
@@ -59,10 +51,7 @@ if (sha1( $str ) == $_GET['signature']) {
                 //gets last id handled
                 $lastId = $dbHandle->insert_id;
 
-
-//Switch handles media types and their associated keywords ------------------------------------------------------------
-
-
+                //Switch handles media types and their associated keywords ------------------------------------------------------------
                 switch ( $msgType ) {
 
                     //Respond specifically if  the user has sent text input
@@ -132,10 +121,7 @@ if (sha1( $str ) == $_GET['signature']) {
                         $response = prepareTextMessage( $xml->ToUserName, $xml->FromUserName, 'Unrecognized input method' );
                 }
                 echo $response;
-
-
-
-//End switch------------------------------------------------------------------------------------------------------------
+                //End switch-------------------------------------------------------------------------------------
 
                 //Insert into db field xml_out
                 $return = $response;
@@ -146,36 +132,23 @@ if (sha1( $str ) == $_GET['signature']) {
                 //Insert xml data sent to user into db for debugging and close handler
                 $sql = "UPDATE xml_logs SET xml_out = '$return' WHERE id = $lastId";
                 $dbHandle->query( $sql );
-
             }
 
-
-//            Log the received data to a file
-
+            //Log the received data to a file
             $errlog = fopen( '/tmp/errlog.txt', 'a' );
             fwrite( $errlog, $content );
             fclose( $errlog );
 
             $dbHandle->close();
-
-
         } //in case database cant be accessed: log it
         else {
 
             $errlog = fopen( '/tmp/errlog.txt', 'a' );
             fwrite( $errlog, 'Database NOT accessed: ' . date( 'Y-m-d H:i:s' ) . "\r\n" );
             fclose( $errlog );
-
         }
-
-
     }
-
     //if sha values don't match
 } else {
-
     die( 'access denied.' );
-
 }
-
-

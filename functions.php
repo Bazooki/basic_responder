@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: chrisvv
- * Date: 2015/02/06
- * Time: 1:42 PM
- */
-
 // Prepares a text message for sending depending on keyword.
 function prepareTextMessage($fromUserName, $toUserName, $content){
 
@@ -16,9 +9,6 @@ function prepareTextMessage($fromUserName, $toUserName, $content){
                      <MsgType><![CDATA[text]]></MsgType>
                      <Content><![CDATA['.$content.']]></Content>
                  </xml>';
-
-
-
 }
 
 // Prepares a rich-text message for sending depending on keyword.
@@ -46,13 +36,11 @@ function prepareRichTextMessage($fromUserName, $toUserName, $title1, $descriptio
                      </item>
                      </Articles>
                  </xml>';
-
 }
 
 function curl_send_json($url,$json=NULL,$method = 'POST'){
 
     $handle = curl_init();
-
 
     $options = array(
         CURLOPT_URL => $url,
@@ -62,9 +50,7 @@ function curl_send_json($url,$json=NULL,$method = 'POST'){
     );
 
     curl_setopt_array($handle,($options));
-
     $resp = curl_exec($handle);
-
     $response =  json_decode($resp);
 
     return $response;
