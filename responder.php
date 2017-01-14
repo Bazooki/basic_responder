@@ -11,22 +11,22 @@ $array[] = $token;
 //Formats array in correct order as mentioned in the wiki
 sort( $array, SORT_STRING );
 $str = implode( $array );
-//grabs php input
+//Grabs php input
 $xmlInput = file_get_contents( 'php://input' );
-//converts xml to object
+//Converts xml to object
 $xml = simplexml_load_string( $xmlInput );
 
 //Compares the local and API signatures
 if (sha1( $str ) == $_GET['signature']) {
 
-    //sends 'echostr' to confirm that the local signature matches the signature from the API
+    //Sends 'echostr' to confirm that the local signature matches the signature from the API
     if (! empty( $_GET['echostr'] )) {
         echo( $_GET['echostr'] );
         die();
-    } //debug code for if something went wrong
+    } //Debug code for if something went wrong
     else {
 
-        //connects to db
+        //Connects to db
         $dbHandle = mysqli_connect( $db['host'], $db['user'], $db['pass'], $db['db'] );
 
         $content = strtolower( $xml->Content );
@@ -36,7 +36,7 @@ if (sha1( $str ) == $_GET['signature']) {
 
         if (! empty( $dbHandle )) {
 
-            //logs the db connect event
+            //Logs the db connect event
             $errlog = fopen( '/tmp/errlog.txt', 'a' );
             fwrite( $errlog, 'Database accessed: ' . date( 'Y-m-d H:i:s' ) . "\r\n" );
             fclose( $errlog );
@@ -45,10 +45,10 @@ if (sha1( $str ) == $_GET['signature']) {
             $sql = "INSERT INTO xml_logs (openid,created,xml_in,msgtype,message) VALUES ('" . $xml->openid . "','" . date( 'Y-m-d H:i:s' ) . "','$xmlInput','$msgType','" . $content . "')";
             $x = $dbHandle->query( $sql );
 
-            //checks if query ran successfully
+            //Checks if query ran successfully
             if ($x === true) {
 
-                //gets last id handled
+                //Gets last id handled
                 $lastId = $dbHandle->insert_id;
 
                 //Switch handles media types and their associated keywords ------------------------------------------------------------
@@ -140,15 +140,15 @@ if (sha1( $str ) == $_GET['signature']) {
             fclose( $errlog );
 
             $dbHandle->close();
-        } //in case database cant be accessed: log it
+        }
         else {
-
+            //In case database cant be accessed: log it
             $errlog = fopen( '/tmp/errlog.txt', 'a' );
             fwrite( $errlog, 'Database NOT accessed: ' . date( 'Y-m-d H:i:s' ) . "\r\n" );
             fclose( $errlog );
         }
     }
-    //if sha values don't match
 } else {
+    //If sha values don't match
     die( 'access denied.' );
 }

@@ -57,8 +57,8 @@ if (isset($_POST['updateMenu'])) {
     ));
 
     $test = curl_send_json('https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$_SESSION['accessToken'],$jsonMenu);
-//Menu sent
-//Echo response from API
+    //Menu sent
+    //Echo response from API
     echo '<pre>';
     var_dump($test);
     echo '</pre>';
@@ -106,7 +106,6 @@ if (isset($_POST['submit'])) {
         'text' => array(
             'content' => 'It works!'
         )
-
     ));
 
     $test = curl_send_json('https://api.wechat.com/cgi-bin/message/custom/send?access_token='.$_SESSION['accessToken'],$jsonOutput);
