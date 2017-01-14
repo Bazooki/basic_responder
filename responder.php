@@ -154,7 +154,7 @@ if (sha1($str) == $_GET['signature']){
 
 //            Log the received data to a file
 
-            $errlog = fopen('errlog.txt', 'a');
+            $errlog = fopen('/tmp/errlog.txt', 'a');
             fwrite($errlog, $content);
             fclose($errlog);
 
