@@ -14,8 +14,8 @@ $token = '62f9b641cffcb486a961727396ced018';
 //Define db values
 $db['host'] = 'localhost';
 $db['db'] = 'wechat';
-$db['user'] = 'wechatter';
-$db['pass'] = 'WhichHat';
+$db['user'] = 'root';
+$db['pass'] = 'root';
 
 //Defines AppID and AppSecret for the token
 $appId = 'wx88574a22883bcfb0';

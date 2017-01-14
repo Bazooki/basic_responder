@@ -9,8 +9,6 @@
 // Prepares a text message for sending depending on keyword.
 function prepareTextMessage($fromUserName, $toUserName, $content){
 
-
-
     return       '<xml>
                      <ToUserName><![CDATA['.$toUserName.']]></ToUserName>
                      <FromUserName><![CDATA['.$fromUserName.']]></FromUserName>
