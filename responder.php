@@ -167,7 +167,7 @@ if (sha1($str) == $_GET['signature']){
         //in case database cant be accessed: log it
         else{
 
-            $errlog = fopen('errlog.txt', 'a');
+            $errlog = fopen('/tmp/errlog.txt', 'a');
             fwrite($errlog, 'Database NOT accessed: '.date('Y-m-d H:i:s'). "\r\n");
             fclose($errlog);
 
